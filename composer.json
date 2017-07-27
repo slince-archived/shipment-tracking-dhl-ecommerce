@@ -1,0 +1,29 @@
+{
+    "name": "slince/shipment-tracking-dhlecommerce",
+    "keywords": ["shipment", "tracking", "tracker", "parcel", "DHL", "DHL eCommerce"],
+    "description": "A flexible and shipment tracking library for DHL eCommerce.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tao",
+            "email": "taosikai@yeah.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "slince/shipment-tracking": "*@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0|^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Slince\\ShipmentTracking\\DHLECommerce\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Slince\\ShipmentTracking\\DHLECommerce\\Tests\\": "tests/"
+        }
+    }
+}

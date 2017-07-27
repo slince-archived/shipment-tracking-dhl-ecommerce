@@ -1,5 +1,5 @@
 {
-    "name": "slince/shipment-tracking-dhlecommerce",
+    "name": "slince/shipment-tracking-dhl-ecommerce",
     "keywords": ["shipment", "tracking", "tracker", "parcel", "DHL", "DHL eCommerce"],
     "description": "A flexible and shipment tracking library for DHL eCommerce.",
     "license": "MIT",

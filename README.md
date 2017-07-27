@@ -1,9 +1,9 @@
 # Shipment Tracking Library For DHL eCommerce
 
-[![Build Status](https://img.shields.io/travis/slince/shipment-tracking-dhlecommerce/master.svg?style=flat-square)](https://travis-ci.org/slince/shipment-tracking-dhlecommerce)
-[![Coverage Status](https://img.shields.io/codecov/c/github/slince/shipment-tracking-dhlecommerce.svg?style=flat-square)](https://codecov.io/github/slince/shipment-tracking-dhlecommerce)
-[![Latest Stable Version](https://img.shields.io/packagist/v/slince/shipment-tracking-dhlecommerce.svg?style=flat-square&label=stable)](https://packagist.org/packages/slince/shipment-tracking-dhlecommerce)
-[![Scrutinizer](https://img.shields.io/scrutinizer/g/slince/shipment-tracking-dhlecommerce.svg?style=flat-square)](https://scrutinizer-ci.com/g/slince/shipment-tracking-dhlecommerce/?branch=master)
+[![Build Status](https://img.shields.io/travis/slince/shipment-tracking-dhl-ecommerce/master.svg?style=flat-square)](https://travis-ci.org/slince/shipment-tracking-dhl-ecommerce)
+[![Coverage Status](https://img.shields.io/codecov/c/github/slince/shipment-tracking-dhl-ecommerce.svg?style=flat-square)](https://codecov.io/github/slince/shipment-tracking-dhl-ecommerce)
+[![Latest Stable Version](https://img.shields.io/packagist/v/slince/shipment-tracking-dhl-ecommerce.svg?style=flat-square&label=stable)](https://packagist.org/packages/slince/shipment-tracking-dhl-ecommerce)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/slince/shipment-tracking-dhl-ecommerce.svg?style=flat-square)](https://scrutinizer-ci.com/g/slince/shipment-tracking-dhl-ecommerce/?branch=master)
 
 A flexible and shipment tracking library for DHL eCommerce and DHL eCommerce(Registered)
 
@@ -12,7 +12,7 @@ A flexible and shipment tracking library for DHL eCommerce and DHL eCommerce(Reg
 Install via composer
 
 ```bash
-$ composer require slince/shipment-tracking-dhlecommerce
+$ composer require slince/shipment-tracking-dhl-ecommerce
 ```
 ## Basic Usage
 

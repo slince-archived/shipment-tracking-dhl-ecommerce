@@ -7,6 +7,13 @@
 
 A flexible and shipment tracking library for DHL eCommerce and DHL eCommerce(Registered)
 
+## Installation
+
+Install via composer
+
+```bash
+$ composer require slince/shipment-tracking-dhlecommerce
+```
 ## Basic Usage
 
 

@@ -5,7 +5,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/slince/shipment-tracking-dhlecommerce.svg?style=flat-square&label=stable)](https://packagist.org/packages/slince/shipment-tracking-dhlecommerce)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/slince/shipment-tracking-dhlecommerce.svg?style=flat-square)](https://scrutinizer-ci.com/g/slince/shipment-tracking-dhlecommerce/?branch=master)
 
-A flexible and shipment tracking library for DHL eCommerce or DHL eCommerce(Registered)
+A flexible and shipment tracking library for DHL eCommerce and DHL eCommerce(Registered)
 
 ## Basic Usage
 

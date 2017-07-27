@@ -4,7 +4,7 @@ namespace Slince\ShipmentTracking\DHLECommerce\Tests;
 use PHPUnit\Framework\TestCase;
 use Slince\ShipmentTracking\DHLECommerce\AccessToken;
 use Slince\ShipmentTracking\DHLECommerce\DHLECommerceTracker;
-use Slince\ShipmentTracking\DHLECommerce\Exception\InvalidAccessToken;
+use Slince\ShipmentTracking\DHLECommerce\Exception\InvalidAccessTokenException;
 use Slince\ShipmentTracking\Exception\TrackException;
 
 class DHLECommerceTrackerTest extends TestCase
@@ -73,7 +73,7 @@ class DHLECommerceTrackerTest extends TestCase
     {
         $tracker = $this->getTrackerMock('tracking_with_invalid_access_token_response');
         $tracker->setAccessToken('foo');
-        $this->expectException(InvalidAccessToken::class);
+        $this->expectException(InvalidAccessTokenException::class);
         $tracker->track('foo');
     }
 }

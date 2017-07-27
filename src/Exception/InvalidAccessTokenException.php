@@ -7,7 +7,7 @@ namespace Slince\ShipmentTracking\DHLECommerce\Exception;
 
 use Slince\ShipmentTracking\Exception\TrackException;
 
-class InvalidAccessToken extends TrackException
+class InvalidAccessTokenException extends TrackException
 {
 
 }

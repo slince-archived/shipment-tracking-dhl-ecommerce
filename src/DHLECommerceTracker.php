@@ -9,7 +9,7 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
-use Slince\ShipmentTracking\DHLECommerce\Exception\InvalidAccessToken;
+use Slince\ShipmentTracking\DHLECommerce\Exception\InvalidAccessTokenException;
 use Slince\ShipmentTracking\Shipment;
 use Slince\ShipmentTracking\ShipmentEvent;
 use Slince\ShipmentTracking\HttpAwareTracker;
@@ -72,7 +72,7 @@ class DHLECommerceTracker extends HttpAwareTracker
         if ($json['trackItemResponse']['responseCode'] != 0 &&
             stripos($json['trackItemResponse']['responseText'], 'Invalid access token') !== false
         ) {
-            throw new InvalidAccessToken(sprintf('The access token "%s" is invalid, please refresh for the new one', $this->accessToken));
+            throw new InvalidAccessTokenException(sprintf('The access token "%s" is invalid, please refresh for the new one', $this->accessToken));
         }
         if ($json['trackItemResponse']['responseCode'] != 0) {
             throw new TrackException(sprintf('Bad response with code "%d"', $json['code']));

@@ -59,7 +59,7 @@ class DHLECommerceTracker extends HttpAwareTracker
     {
         $parameters = [
             'trackItemRequest' => [
-                'token' => $this->getAccessToken(),
+                'token' => $this->getAccessToken()->getToken(),
                 'messageLanguage' => 'en',
                 'messageVersion' => '1.1',
                 'trackingReferenceNumber' => [$trackingNumber]

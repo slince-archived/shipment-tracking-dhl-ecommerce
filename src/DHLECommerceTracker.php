@@ -120,6 +120,7 @@ class DHLECommerceTracker extends HttpAwareTracker
 
     /**
      * @return HttpClient
+     * @codeCoverageIgnore
      */
     protected function getHttpClient()
     {
@@ -134,6 +135,7 @@ class DHLECommerceTracker extends HttpAwareTracker
      * @param array $options
      * @throws TrackException
      * @return array
+     * @codeCoverageIgnore
      */
     protected function sendRequest(RequestInterface $request, $options = [])
     {

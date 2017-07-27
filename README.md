@@ -9,6 +9,7 @@ A flexible and shipment tracking library for DHL eCommerce or DHL eCommerce(Regi
 
 ## Basic Usage
 
+
 ```php
 
 $tracker = new Slince\ShipmentTracking\DHLECommerce\DHLECommerceTracker(CLIENT_ID, PASSWORD);
@@ -22,6 +23,9 @@ try {
    echo $shipment->getOrigin();
    echo $shipment->getDestination();
    print_r($shipment->getEvents());  //print the shipment events
+   
+} catch (TrackException $exception) {
+    exit('Track error: ' . $exception->getMessage());
 }
 
 ```
@@ -29,8 +33,8 @@ The above code will get access token automatically for shipment information.
 
 ### Access Token
 
-
 ```php
+$shipment = $tacker->track('CNAQV100168101);
 $accessToken = $tracker->getAccessToken(); //You can save this for the next query
 
 //... to do
@@ -38,7 +42,12 @@ $accessToken = $tracker->getAccessToken(); //You can save this for the next quer
 try{
     $tracker->setAccessToken($accessToken); //Set the access token; the tracker will not send requst for the access token
     $shipment = $tacker->track('CNAQV100168101);
-} catch () {
+} catch (InvalidAccessToken $exception) {
+     $accessToken = $tracker->getAccessToken(true); // If the access token is invalid, refresh it.
+     $shipment = $tacker->track('CNAQV100168101);
+     //... to do
+} catch (TrackException $exception) {
+    exit('Track error: ' . $exception->getMessage());
 }
 ```
 ## License

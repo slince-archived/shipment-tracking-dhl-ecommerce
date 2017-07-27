@@ -7,10 +7,12 @@ namespace Slince\ShipmentTracking\DHLECommerce;
 
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
+use Slince\ShipmentTracking\DHLECommerce\Exception\InvalidAccessToken;
 use Slince\ShipmentTracking\Shipment;
 use Slince\ShipmentTracking\ShipmentEvent;
 use Slince\ShipmentTracking\HttpAwareTracker;
-use Slince\ShipmentTracking\Exception\RuntimeException;
 use Slince\ShipmentTracking\Exception\TrackException;
 
 class DHLECommerceTracker extends HttpAwareTracker
@@ -37,36 +39,8 @@ class DHLECommerceTracker extends HttpAwareTracker
 
     public function __construct($clientId, $password, HttpClient $httpClient = null)
     {
-        $this->setHttpClient($httpClient);
+        $httpClient && $this->setHttpClient($httpClient);
         $this->credential = new Credential($clientId, $password);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function track($trackingNumber)
-    {
-        $accessToken = $this->accessToken ?: $this->getAccessToken();
-        $parameters = [
-            'trackItemRequest' => [
-                'token' => $accessToken,
-                'messageLanguage' => 'en',
-                'messageVersion' => '1.1',
-                'trackingReferenceNumber' => [$trackingNumber]
-            ]
-        ];
-        try {
-            $response = $this->getHttpClient()->post(static::TRACKING_ENDPOINT, [
-                'json' => $parameters
-            ]);
-            $json = \GuzzleHttp\json_decode((string)$response->getBody(), true);
-            if ($json['trackItemResponse']['responseCode'] != 0) {
-                throw new RuntimeException(sprintf('Bad response with code "%d"', $json['code']));
-            }
-            return static::buildShipment($json);
-        } catch (GuzzleException $exception) {
-            throw new TrackException($exception->getMessage());
-        }
     }
 
     /**
@@ -79,9 +53,38 @@ class DHLECommerceTracker extends HttpAwareTracker
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function track($trackingNumber)
+    {
+        $parameters = [
+            'trackItemRequest' => [
+                'token' => $this->getAccessToken(),
+                'messageLanguage' => 'en',
+                'messageVersion' => '1.1',
+                'trackingReferenceNumber' => [$trackingNumber]
+            ]
+        ];
+        $request = new Request('POST', static::TRACKING_ENDPOINT);
+        $json = $this->sendRequest($request, [
+            'json' => $parameters
+        ]);
+        if ($json['trackItemResponse']['responseCode'] != 0 &&
+            stripos($json['trackItemResponse']['responseText'], 'Invalid access token') !== false
+        ) {
+            throw new InvalidAccessToken(sprintf('The access token "%s" is invalid, please refresh for the new one', $this->accessToken));
+        }
+        if ($json['trackItemResponse']['responseCode'] != 0) {
+            throw new TrackException(sprintf('Bad response with code "%d"', $json['code']));
+        }
+        return static::buildShipment($json);
+
+    }
+
+    /**
      * Gets the access token
      * @param boolean $refresh
-     * @throws RuntimeException
+     * @throws TrackException
      * @return AccessToken
      */
     public function getAccessToken($refresh = false)
@@ -89,14 +92,16 @@ class DHLECommerceTracker extends HttpAwareTracker
         if ($this->accessToken && !$refresh) {
             return $this->accessToken;
         }
-        $response = $this->getHttpClient()->get(static::ACCESS_TOKEN_ENDPOINT, [
+        $request = new Request('GET', static::ACCESS_TOKEN_ENDPOINT);
+        $json = $this->sendRequest($request, [
             'query' => array_merge($this->credential->toArray(), [
                 'returnFormat' => 'json'
             ])
         ]);
-        $json = \GuzzleHttp\json_decode((string)$response->getBody(), true);
-        if (!isset($json['accessTokenResponse']) || $json['accessTokenResponse']['responseStatus']['code'] != '100000') {
-            throw new RuntimeException(sprintf('Error to get access token'));
+        if (!isset($json['accessTokenResponse']['responseStatus']) || $json['accessTokenResponse']['responseStatus']['code'] != '100000') {
+            throw new TrackException(sprintf('Get access token error with message details "%s"',
+                $json['accessTokenResponse']['responseStatus']['messageDetails']
+            ));
         }
         return $this->accessToken = new AccessToken(
             $json['accessTokenResponse']['token'],
@@ -122,6 +127,22 @@ class DHLECommerceTracker extends HttpAwareTracker
             return $this->httpClient;
         }
         return $this->httpClient = new HttpClient();
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param array $options
+     * @throws TrackException
+     * @return array
+     */
+    protected function sendRequest(RequestInterface $request, $options = [])
+    {
+        try {
+            $response = $this->getHttpClient()->send($request, $options);
+        } catch (GuzzleException $exception) {
+            throw new TrackException($exception->getMessage());
+        }
+        return \GuzzleHttp\json_decode((string)$response->getBody(), true);
     }
 
     /**

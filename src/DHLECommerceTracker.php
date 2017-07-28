@@ -75,7 +75,7 @@ class DHLECommerceTracker extends HttpAwareTracker
             throw new InvalidAccessTokenException(sprintf('The access token "%s" is invalid, please refresh for the new one', $this->accessToken));
         }
         if ($json['trackItemResponse']['responseCode'] != 0) {
-            throw new TrackException(sprintf('Bad response with code "%d"', $json['code']));
+            throw new TrackException(sprintf('Bad response with code "%d"', $json['trackItemResponse']['responseCode']));
         }
         return static::buildShipment($json);
 
